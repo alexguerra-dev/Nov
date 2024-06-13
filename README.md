@@ -29,6 +29,6 @@ A player may choose to stop after a roll with a **new** scoring dice set and kee
 - "Five Ones"
   - 5x1 = 5000
 
-If at any point **all** of the dice are scoring **sets** the player rolls **all** five dice. (It is possible to roll no scoring dice when you are foced to roll, all points are lost)
+If at any point **all** of the dice are scoring **sets** the player rolls **all** five dice. (It is possible to roll no scoring dice when you are forced to roll, all points are lost)
 
-The first player to reach 5,000 **ends** the game. When the game ends all other players have one last turn to beat the players score that ended the game.\*\*
+The first player to reach 5,000 **ends** the game. When the game ends all other players have one last turn to beat the players score that ended the game.
