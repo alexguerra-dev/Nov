@@ -1,25 +1,34 @@
 import { useState } from 'react'
+import { rollDice as roll, calculateScore } from '../utils/scoring'
 
 function Game({ players }) {
-    const [playerList, setPlayerList] = useState(players)
+    const [playerList, setPlayerList] = useState(
+        players.map((player) => ({
+            ...player,
+            isActive: player === players[0],
+        })),
+    )
     const [currentRoll, setCurrentRoll] = useState([])
+    const [canRoll, setCanRoll] = useState([true, true, true, true, true])
     const [currentScore, setCurrentScore] = useState(0)
 
-    const handleRollDice = () => {
-        const dice = rollDice()
+    const rollDice = () => {
+        const dice = roll().map((die, index) =>
+            canRoll[index] ? die : currentRoll[index],
+        )
         const score = calculateScore(dice)
         if (score === 0) {
-            // No score turn is over
             endTurn()
         } else {
             setCurrentRoll(dice)
             setCurrentScore((prev) => prev + score)
+            setCanRoll(dice.map(() => true)) // Reset all dice to be rollable for simplicity
         }
     }
 
     const endTurn = () => {
-        setPlayerList((players) =>
-            players.map((player, index) => {
+        setPlayerList((playerList) =>
+            playerList.map((player, index) => {
                 if (player.isActive) {
                     return {
                         ...player,
@@ -31,14 +40,15 @@ function Game({ players }) {
                         ...player,
                         isActive:
                             index ===
-                            (players.findIndex((p) => p.isActive) + 1) %
-                                players.length,
+                            (playerList.findIndex((p) => p.isActive) + 1) %
+                                playerList.length,
                     }
                 }
             }),
         )
         setCurrentRoll([])
         setCurrentScore(0)
+        setCanRoll([true, true, true, true, true])
     }
 
     return (
@@ -61,23 +71,28 @@ function Game({ players }) {
             </div>
             <div className="actions">
                 {currentRoll.length > 0 && (
-                    <div className="dice">
+                    <div className="dice flex space-x-2 mt-4">
                         {currentRoll.map((die, index) => (
-                            <span key={index} className="die">
-                                {die}
-                            </span>
+                            <img
+                                key={index}
+                                src={`images/dice/${
+                                    canRoll[index] ? 'red' : 'white'
+                                }-dice${die}.png`}
+                                alt={`Dice ${die}`}
+                                className="w-12 h-12"
+                            />
                         ))}
                     </div>
                 )}
                 <button
-                    onClick={handleRollDice}
-                    className="bg-blue-500 text-white p-2 rounded"
+                    onClick={rollDice}
+                    className="bg-blue-500 text-white p-2 rounded mt-4"
                 >
                     Roll Dice
                 </button>
                 <button
                     onClick={endTurn}
-                    className="bg-red-500 text-white p-2 rounded"
+                    className="bg-red-500 text-white p-2 rounded mt-4 ml-4"
                 >
                     End Turn
                 </button>

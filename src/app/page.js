@@ -14,19 +14,17 @@ export default function Home() {
     }
 
     return (
-        <div className="container mx-auto p-4">
+        <main className="flex flex-col items-center p-4">
             <header>
                 <h1 className="text-4xl font-bold text-center my-8">
                     Dice Game
                 </h1>
             </header>
-            <main>
-                {gameStarted ? (
-                    <Game players={players} />
-                ) : (
-                    <Setup onFinished={handleSetupComplete} />
-                )}
-            </main>
-        </div>
+            {gameStarted ? (
+                <Game players={players} />
+            ) : (
+                <Setup onFinished={handleSetupComplete} />
+            )}
+        </main>
     )
 }
